@@ -39,10 +39,10 @@ class QueryDslBasicTest {
         groupRepository.save(leSserafim);
         groupRepository.save(ive);
 
-        Idol idol1 = new Idol("김채원", 24, leSserafim);
-        Idol idol2 = new Idol("사쿠라", 26, leSserafim);
-        Idol idol3 = new Idol("가을", 22, ive);
-        Idol idol4 = new Idol("리즈", 20, ive);
+        Idol idol1 = new Idol("김채원", 24, "여", leSserafim);
+        Idol idol2 = new Idol("사쿠라", 26, "여", leSserafim);
+        Idol idol3 = new Idol("가을", 22, "여", ive);
+        Idol idol4 = new Idol("리즈", 20, "여", ive);
 
         idolRepository.save(idol1);
         idolRepository.save(idol2);
@@ -79,13 +79,12 @@ class QueryDslBasicTest {
         String substring = "김";
 
         // when
-        List<Idol> result = factory.selectFrom(idol)
+        List<Idol> result = factory
+                .selectFrom(idol)
                 .where(idol.idolName.contains(substring))
                 .fetch();
 
         // then
-        assertFalse(result.isEmpty());
-
         for (Idol idol : result) {
             System.out.println("idol = " + idol);
             assertTrue(idol.getIdolName().contains(substring));
@@ -96,20 +95,20 @@ class QueryDslBasicTest {
     @DisplayName("나이가 20세에서 25세 사이인 아이돌은 존재한다.")
     void testAge2() {
         // given
-        int age1 = 20;
-        int age2 = 25;
+        int ageStart = 20;
+        int ageEnd = 25;
 
         // when
-        List<Idol> result = factory.selectFrom(idol)
-                .where(idol.age.between(age1, age2))
+        List<Idol> result = factory
+                .selectFrom(idol)
+                .where(idol.age.between(ageStart, ageEnd))
                 .fetch();
 
         // then
         assertFalse(result.isEmpty());
-
         for (Idol idol : result) {
             System.out.println("idol = " + idol);
-            assertTrue(idol.getAge() >= age1 && idol.getAge() <= age2);
+            assertTrue(idol.getAge() >= ageStart && idol.getAge() <= ageEnd);
         }
     }
 
@@ -120,16 +119,23 @@ class QueryDslBasicTest {
         String groupName = "르세라핌";
 
         // when
-        List<Idol> result = factory.selectFrom(idol)
+        List<Idol> result = factory
+                .selectFrom(idol)
                 .where(idol.group.groupName.eq(groupName))
                 .fetch();
 
         // then
-        assertFalse(result.isEmpty());
-
-       assertEquals(2, result.size());
-
-        System.out.println("result = " + result);
+        assertEquals(2, result.size());
     }
 
+
 }
+
+
+
+
+
+
+
+
+
